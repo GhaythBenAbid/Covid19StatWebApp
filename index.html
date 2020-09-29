@@ -4,28 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/vue"></script>
-    <title>Vue js #2</title>
+    <title>Covid-19 Live Stat</title>
 </head>
 
 <body>
     <div id="vue-app">
-        <div class="content">
-            <div class="background-layer" v-for="(item,index) in posts">
-                <div class="info">
-                    <img v-bind:src="images(index)">
-                    <p>{{infos(index)[0]}}</p>
-                    <p><span>Cases : </span>{{infos(index)[1]}}</p>
-                    <p><span>Today cases : </span>{{infos(index)[2]}}</p>
-                    <p><span>Deaths : </span>{{infos(index)[3]}}</p>
-                    <p><span>Recoverd : </span>{{infos(index)[4]}}</p>
-                </div>
-            </div>
+        <div class="App-title" v-show="display">
+            <p>Covid-19 Live Stat</p>
+            <p>Powered by <span>"corona.lmao.ninja"</span></p>
 
         </div>
 
+        <div class="search" v-show="display">
+            <input v-model="message" type="text" name="search" placeholder="Type the Country name...">
+        </div>
+
+
+        <div class="content" v-show="display">
+            <div class="background-layer" v-for="item in filtered" v-on:click="Item = item; display = !display">
+                <div class="info">
+                    <img v-bind:src="item.countryInfo.flag">
+                    <p>{{item.country}}</p>
+                    <p><span>Cases : </span>{{item.cases}}</p>
+                    <p><span>Today cases : </span>{{item.todayCases}}</p>
+                    <p><span>Deaths : </span>{{item.deaths}}</p>
+                    <p><span>Recovered : </span>{{item.recovered}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="country-details" v-show="!display">
+            <div class="return" v-on:click="display = !display">
+            <i class="fas fa-long-arrow-alt-left"></i>
+            <p>Return</p>
+        </div>
+            <div class="info-details">
+                <div class="country-flag">
+                    <img v-bind:src="images()">
+                </div>
+                <p>{{Item.country}}</p>
+                <p><span>Cases : </span>{{Item.cases}}</p>
+                <p><span>Today cases : </span>{{Item.todayCases}}</p>
+                <p><span>Deaths : </span>{{Item.deaths}}</p>
+                <p><span>Recovered : </span>{{Item.recovered}}</p>
+
+                <iframe  width="100%" height="450" v-bind:src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyCMUQIGhyEyJcKvvQvuwlu71RwzC0DCal8&q='+country_map()+'&zoom=5'">
+            </div>
+        </div>
+
+        </iframe>
+
+
+
     </div>
+
+
 
 
     <script src="bundle.js"></script>

@@ -1,43 +1,47 @@
 window.axios = require('axios');
 
+
+
+
 new Vue({
     el: '#vue-app',
 
     
 
     mounted:function(){
-        axios.get("https://disease.sh/v3/covid-19/countries").then(response => {this.posts = response.data,console.log(response)}  );
+        axios.get("https://disease.sh/v3/covid-19/countries").then(response => {this.posts = response.data});
 
     },
 
     data: {
-        posts: null,
-        x : null,
+        posts: [],
+        message : '',
+        display : true,
+        Item :{},
+    },
+    methods:{
+        images:function(){
+            if(this.display==false){
+                for(image in this.Item.countryInfo){
+                    return(this.Item.countryInfo["flag"]);
+                }
+            }
+        },
+
+        country_map:function(){
+            return this.Item.country;
+        }
+
+        
+        
     },
 
-    
-
-    methods:{
-
-        
-        
-        images:function(index){
-            return this.posts[index].countryInfo.flag;
-        },
-
-
-
-        infos:function(index){
-            country = this.posts[index].country;
-            cases = this.posts[index].cases;
-            todayCases = this.posts[index].todayCases;
-            deaths = this.posts[index].deaths;
-            recovered = this.posts[index].recovered;
-            return[country,cases,todayCases,deaths,recovered];
-        },
-
-
-
+    computed:{
+        filtered:function(){
+             return this.posts.filter(x => {
+                return x.country.toUpperCase().match(this.message.toUpperCase());
+            });
+        }
 
     }
 
